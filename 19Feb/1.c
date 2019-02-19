@@ -20,7 +20,7 @@ int minc(int parent[], bool vnotinc[])
     return min_ind;
 }
 
-void prim(int graph[V][V])
+void dijkstra(int graph[V][V])
 {
     int parent[V];
     bool vnotinc[V];
@@ -54,6 +54,6 @@ int main()
     int graph[V][V] = {
         {0,5,4,0.0,0,0},{5,0,3,4,7,0,0},{4,3,0,2,0,6,0},{0,4,2,0,5,1,0},{0,7,0,5,0,0,6},{0,0,6,1,0,0,7},{0,0,0,0,6,7,0}
     };
-    prim(graph);
+    dijkstra(graph);
     return 0;
 }
