@@ -15,7 +15,6 @@ int knapsack(int W, int weights[], int benefits[], int n)
         int b = knapsack(W, weights, benefits, n-1);
         return (a > b)? a : b;
     }
-    
 }
 
 int main()
