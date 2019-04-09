@@ -32,16 +32,14 @@ int compareY(const void* a, const void* b)
 
 float dist(Point p1, Point p2) 
 { 
-    return sqrt( (p1.x - p2.x)*(p1.x - p2.x) + 
-                 (p1.y - p2.y)*(p1.y - p2.y) 
-               ); 
+    return sqrt((p1.x - p2.x)*(p1.x - p2.x) + (p1.y - p2.y)*(p1.y - p2.y)); 
 }
 
-float bruteForce(Point P[], int n) 
+float bf(Point P[], int n) 
 { 
     float min = FLT_MAX; 
     for (int i = 0; i < n; ++i) 
-        for (int j = i+1; j < n; ++j) 
+        for (int j = i + 1; j < n; ++j) 
             if (dist(P[i], P[j]) < min) 
                 min = dist(P[i], P[j]); 
     return min; 
@@ -49,12 +47,12 @@ float bruteForce(Point P[], int n)
 
 float min(float x, float y) 
 { 
-    return (x < y)? x : y; 
+    return (x < y) ? x : y; 
 } 
 
-float stripClosest(Point strip[], int size, float d) 
+float stripUtil(Point strip[], int size, float d) 
 { 
-    float min = d; 
+    float min = d;
     qsort(strip, size, sizeof(Point), compareY);   
     for (int i = 0; i < size; ++i) 
         for (int j = i+1; j < size && (strip[j].y - strip[i].y) < min; ++j) 
@@ -64,37 +62,37 @@ float stripClosest(Point strip[], int size, float d)
     return min; 
 }
 
-float closestUtil(Point P[], int n) 
+float Util(Point P[], int n) 
 { 
     if (n <= 3) 
-        return bruteForce(P, n); 
+        return bf(P, n); 
     int mid = n/2; 
-    Point midPoint = P[mid]; 
+    Point midp = P[mid]; 
  
-    float dl = closestUtil(P, mid); 
-    float dr = closestUtil(P + mid, n-mid); 
+    float dl = Util(P, mid); 
+    float dr = Util(P + mid, n-mid); 
  
     float d = min(dl, dr); 
  
     Point strip[n]; 
     int j = 0; 
     for (int i = 0; i < n; i++) 
-        if (abs(P[i].x - midPoint.x) < d) 
+        if (abs(P[i].x - midp.x) < d) 
             strip[j] = P[i], j++; 
 
-    return min(d, stripClosest(strip, j, d) ); 
+    return min(d, stripUtil(strip, j, d) ); 
 }
 
 float closest(Point P[], int n)
 {
     qsort(P, n, sizeof(Point), compareX);
-    return closestUtil(P, n);
+    return Util(P, n);
 } 
 
 int main(int argc, char const *argv[])
 {
     Point P[] = {{2, 3}, {12, 30}, {40, 50}, {5, 1}, {12, 10}, {3, 4}}; 
     int n = sizeof(P) / sizeof(P[0]);
-    cout<<"Minimum distance is: "<<closest(P, n);
+    cout<<"Minimum distance is: "<<closest(P, n)<<"\n";
     return 0;
 }
